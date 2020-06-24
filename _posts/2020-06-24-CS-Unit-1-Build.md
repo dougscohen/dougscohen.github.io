@@ -19,16 +19,6 @@ You're probably wondering how the algorithm finds its "neighbors". In other word
 
 ```python
 def find_distance(self, row_A, row_B):
-    """
-    Returns Euclidean distance between 2 rows of data.
-
-        Parameters:
-                row_A (list): vector of numerical data
-                row_B (list): vector of numerical data
-
-        Returns:
-             Euclidean Distance (float)
-    """
     
     # set distance to start at 0
     dist = 0.0
@@ -50,15 +40,11 @@ It;s important to understand what is happening above, as it is vital in the pred
 class KNN():
     
     def __init__(self, num_neighbors=5):
-        """
-        Initialization of algorithm
-        """
+
         self.num_neighbors = num_neighbors
         
-    def fit(self, X_train, y_train):
-        """
-        Fits the model to the training data
-        """
+    def fit(self, X_train, y_train=[]):
+
         self.X_train = X_train
         self.y_train = y_train
 ```
@@ -79,56 +65,78 @@ Now that we've covered how to find the Euclidean distance, and how to fit the cl
 
 ```python
 def predict(self, X):
-      """
-      Returns a list of predictions for the inputed X matrix.
 
-      Parameters:
-              X (list): 2D list/array of numerical values
+    # set predictinos to an empty list
+    predictions = []
 
-      Returns:
-              predictions (list): list of predictions for each of the vectors
-              in X. 
-      """
-      # set predictinos to an empty list
-      predictions = []
+    # iterate (len(X)) number of times through 
+    for i in range(len(X)):
 
-      # iterate (len(X)) number of times through 
-      for i in range(len(X)):
+      # list containing euclidean distances
+      euclidean_distances = []
 
-          # list containing euclidean distances
-          euclidean_distances = []
+      # for each row in X_train, find its euclidean distance with the
+      #. current 'X' row we are iterating through
+      for row in self.X_train:
+          eu_dist = self.find_distance(row, X[i])
+          # append each euclidean distance to the list above
+          euclidean_distances.append(eu_dist)
 
-          # for each row in X_train, find its euclidean distance with the
-          #. current 'X' row we are iterating through
-          for row in self.X_train:
-              eu_dist = self.find_distance(row, X[i])
-              # append each euclidean distance to the list above
-              euclidean_distances.append(eu_dist)
+      # sort the euclidean distances from smallest to largest and grab
+      #. the first K distances where K is the num_neigbors we want
+      euclidean_distances_sorted = np.array(euclidean_distances).argsort()[:self.num_neighbors]
 
-          # sort the euclidean distances from smallest to largest and grab
-          #. the first K distances where K is the num_neigbors we want
-          euclidean_distances_sorted = np.array(euclidean_distances).argsort()[:self.num_neighbors]
+      # empty dictionary for class count
+      neighbor_count = {}
 
-          # empty dictionary for class count
-          neighbor_count = {}
-          
-          # for each neighbor, find its class
-          for j in euclidean_distances_sorted:
-              if self.y_train[j] in neighbor_count:
-                  neighbor_count[self.y_train[j]] += 1
-              else:
-                  neighbor_count[self.y_train[j]] = 1
+      # for each neighbor, find its class
+      for j in euclidean_distances_sorted:
+          if self.y_train[j] in neighbor_count:
+              neighbor_count[self.y_train[j]] += 1
+          else:
+              neighbor_count[self.y_train[j]] = 1
 
-          # get the most common class label and append it to predictions
-          predictions.append(max(neighbor_count, key=neighbor_count.get))
+      # get the most common class label and append it to predictions
+      predictions.append(max(neighbor_count, key=neighbor_count.get))
 
-      return predictions
+    return predictions
 ```
 
-So what's going on here?
+So what's going on here? Basically are iterating through X, where X can either be a single row, or multiple rows of data. Each time through, we are going to calculate the Euclidian distance with every row in X_train. However, we aren't concerned about every Euclidean distances, just the K smallest, where K is the number of neighbors we are looking for. We grab those indeces and then find the class label for each neighbor (accessed through indeces in y_train). Out of all the neighbors, whichever class label appears the most is the one we will append to the predictions list. So however many rows we input for X, is how long our predictions list will be.
 
+If you happen to split your data into training and testing subsets, you can predict on your test set (X_test), and then compare those predictions to thr real class labels (y_test). For a binary classification problem (one where there's only two class labels), by just guessing each target, you would achieve a 50% accuracy rate. So if you do do achieve an accuracy score of over 50%, you know your algoithm is more useful than just guessing! However, realistically, we want our accuracy to be above 90%. We will test our alogithm on a sample dataset a little later, and see how it does!
 
+So we've got methods to predict our target, but what if you just simply want to view neighbors. Let's create a function where you can input a row of data, and return its nearest neighbors. I mean after all, we are building a K Nearest Neighbors Classifier. Seeing neighbors should shed some light on how well our algorithm works. 
 
+```python
+def show_neighbors(self, x_instance):
+
+    # set predictions to an empty list
+    neighbors = []
+
+    # list containing euclidean distances
+    euclidean_distances = []
+
+    # for each row in X_train, find its euclidean distance with the
+    #. current 'X' row we are iterating through
+    for row in self.X_train:
+        eu_dist = self.find_distance(row, x_instance)
+        # append each row and the euclidean distance to the list above
+        euclidean_distances.append((row, eu_dist))
+
+    # sort the euclidean distances from smallest distance to largest
+    #. distance
+    euclidean_distances.sort(key=lambda tup: tup[1])
+
+    # append to the neigbors list
+    neighbors.append(euclidean_distances)
+
+    # return the first K entries in the neighbors list where K is the
+    #. number of neighbors
+    return neighbors[0][:self.num_neighbors]
+```
+
+Finally, we have our code to return the k nearest neighbors.
 
 
 
