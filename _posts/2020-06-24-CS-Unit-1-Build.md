@@ -136,9 +136,32 @@ def show_neighbors(self, x_instance):
     return neighbors[0][:self.num_neighbors]
 ```
 
-Finally, we have our code to return the k nearest neighbors.
+Finally, we have our code to return the k nearest neighbors. A lot of the steps are the same as the predict method, however this time, when we append to the euclidean distances, we are appending a tuple that includes the neighbor and its euclidean distance. We then sort it from smallest distance to largest distance, and return the first K results in the list, depending on the number of neighbors that was set initially.
 
 
+## Compare
+
+Okay. We have a working algorithm that was built from scratch. Let's see how well it performs compared to the K Nearest Neighbors classifier in Scikit-learn. 
+
+### KNN from Scratch
+
+```python
+import pandas as pd
+
+iris = pd.read_csv('data/iris.csv', names=['sepal length', 'sepal width', 'petal length', 'petal width', 'class'])
+train, test = train_test_split(iris, random_state=3)
+X_train = train[['sepal length', 'sepal width', 'petal length', 'petal width']].values.tolist()
+y_train = train['class'].values.tolist()
+X_test = test[['sepal length', 'sepal width', 'petal length', 'petal width']].values.tolist()
+y_test = test['class'].values.tolist()
+
+knn = KNN(num_neighbors=5)
+knn.fit(X_train, y_train)
+predictions = knn.predict(X_test)
+print(f"My model's accuracy: {accuracy_score(y_test, predictions)}")
+```
+
+KNN from scratch accuracy: 94.74%
 
 Here's a useless table:
 
