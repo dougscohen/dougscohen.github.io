@@ -55,19 +55,16 @@ def find_distance(self, row_A, row_B):
     return np.sqrt(dist)
 ```
 
-The comments will help walk you through the code, but let's take a look at it together. The function takes in 2 rows of data that are the same length. Assuming each row has a length greater than 1, we want to iterate through each index of row_A, find its value, and subtract the value at the same index position in row_B. After squaring the difference, we then add that value to the existing distance total. Finally, we take the square root of the total distance to get the Euclidean distance between two rows of data.
+The comments will help walk you through the code, but let's take a look at it together. The function takes in two data points that are the same length. We want to iterate through each index of row_A, find its value, and subtract the value at the same index position in row_B. After squaring the difference, we then add that value to the existing distance total. Finally, we take the square root of the total distance to get the Euclidean distance between two points of data.
 
 It's important to understand what is happening above, as it is vital in the prediction portion of a K Nearest Neighbors Classifier. In the next step, we will fit the KNN classifier. This step isn't necessary for a lazy learning algorithm, but it can be useful for storing the training data in memory. Let's take a look at what our KNN class would look like:
 
 ```python
 class KNN():
-    
-    def __init__(self, num_neighbors=5):
-
-        self.num_neighbors = num_neighbors
+    def __init__(self, K=5):
+        self.K = K
         
     def fit(self, X_train, y_train=[]):
-
         self.X_train = X_train
         self.y_train = y_train
 ```
@@ -80,9 +77,9 @@ X_train = [[1, 2, 3],        y_train = [0,
            [7, 8, 9]]                   0]
 ```
 
-The first row in X_train would belong to class "0". Second would belong to class "1". And third would belong to calss "0". This is extremely useful in testing how useful our alogrithm is. You can split the data into testing and training, and then when you go to predict on the testing data, you can compare how well the predictions for reach row mtach up against the actual class for each row.
+The first row in X_train would belong to class "0". Second would belong to class "1". And third would belong to calss "0". This is extremely useful in testing the quality of the algorithm. You can split the data into testing and training, and then when you go to predict on the testing data, you can compare how well the predictions for reach row match up against the actual class for each row.
 
-Now that we've covered how to find the Euclidean distance, and how to fit the classifier, let's get into the bulk of any KNN, the prediction. This is the point of it, after all. Say we have a flower, and we know it's characteristics. We want to be able to make an educated guess about the type of flower it is. We use the data we already have on hand to predict the target (flower). So let's define the predict method:
+Now that we've covered how to find the Euclidean distance, and how to fit the classifier, let's get into the bulk of any KNN, the prediction. Say we have some data on sunflowers, and for each data point we know the petal length, petal width, and whether or not its a sunflower. Say we are now taking a walk and see a beautiful flower. We don't know whether it's a sunflower or not, but we are able to measure its petal length and width. We want to be able to make an educated guess about whether the flower is or is not a sunflower, so we plug our new data into the predicct method, to predict sunflower/not a sunflower. So let's define the predict method:
 
 ```python
 def predict(self, X):
@@ -105,7 +102,7 @@ def predict(self, X):
 
       # sort the euclidean distances from smallest to largest and grab
       #. the first K distances where K is the num_neigbors we want
-      neighbor_indeces = np.array(euclidean_distances).argsort()[:self.num_neighbors]
+      neighbor_indeces = np.array(euclidean_distances).argsort()[:self.K]
 
       # empty dictionary for class count
       neighbor_count = {}
@@ -123,11 +120,9 @@ def predict(self, X):
     return predictions
 ```
 
-So what's going on here? Basically are iterating through X, where X can either be a single row, or multiple rows of data. Each time through, we are going to calculate the Euclidian distance with every row in X_train. However, we aren't concerned about every Euclidean distances, just the K smallest, where K is the number of neighbors we are looking for. We grab those indeces and then find the class label for each neighbor (accessed through indeces in y_train). Out of all the neighbors, whichever class label appears the most is the one we will append to the predictions list. So however many rows we input for X, is how long our predictions list will be.
+So what's going on here? Basically we are iterating through X, where X can either be a single data point, or multiple data points. Each time through, we are going to calculate the Euclidian distance with every data point in X_train. However, we aren't concerned about every Euclidean distance, just the K smallest, where K is the number of neighbors. We grab the indeces and then find the class label for each neighbor (accessed through indeces in y_train). Out of all the neighbors, whichever class label appears the most is the one we will append to the predictions list.
 
-If you happen to split your data into training and testing subsets, you can predict on your test set (X_test), and then compare those predictions to the real class labels (y_test). For a binary classification problem (one where there's only two class labels), by just guessing each target, you would achieve a 50% accuracy rate. So if you do achieve an accuracy score of over 50%, you know your algoithm is more useful than just guessing! However, realistically, we want our accuracy to be above 90%. We will test our alogithm on a sample dataset a little later, and see how it does!
-
-So we've got methods to predict our target, but what if you just simply want to view neighbors. Let's create a function where you can input a row of data, and return its nearest neighbors. I mean after all, we are building a K Nearest Neighbors Classifier. Seeing neighbors should shed some light on how well our algorithm works. 
+So we've got methods to predict our target, but what if you just simply want to view neighbors. Let's create a method where you can input a single row of data, and return its nearest neighbors. Seeing neighbors should shed some light on how well our algorithm works. 
 
 ```python
 def show_neighbors(self, x_instance):
@@ -144,7 +139,7 @@ def show_neighbors(self, x_instance):
 
     # sort from smallest distance to largest distance and grab the first K
     #. indeces where K is the number of neigbors
-    neighbor_indices = np.array(euclidean_distances).argsort()[:self.num_neighbors]
+    neighbor_indices = np.array(euclidean_distances).argsort()[:self.K]
 
     # list containg tuples of neighbor indeces and its euclidian distance
     #. to x_instance
@@ -158,7 +153,7 @@ def show_neighbors(self, x_instance):
     return neighbors_and_distances
 ```
 
-Finally, we have our code to return the k nearest neighbors. A lot of the steps are the same as the predict method, however this time, we eturn a list (of K length) of tuples, where each tuple contains a neighbor and its euclidean distance to the given input row of data. Having a method that returns the neighbor indeces is great, because we can then go back in view each neighbor using said indeces.
+Finally, we have our code to return the k nearest neighbors. A lot of the steps are the same as the predict method, however this time, we return a list (of K length) of tuples, where each tuple contains a neighbor and its euclidean distance to the given input. Having a method that returns the neighbor indeces is great, because we can then go back in view each neighbor using said indeces.
 
 ## Compare
 
@@ -170,14 +165,15 @@ Okay. We have a working algorithm that was built from scratch. Let's see how wel
 import pandas as pd
 from sklearn.metrics import accuracy_score
 
-iris = pd.read_csv('data/iris.csv', names=['sepal length', 'sepal width', 'petal length', 'petal width', 'class'])
+column_names = ['sepal_length', 'sepal_width', 'petal_length', 'petal_width', 'class']
+iris = pd.read_csv('data/iris.csv', names=column_names)
 train, test = train_test_split(iris, random_state=3)
-X_train = train[['sepal length', 'sepal width', 'petal length', 'petal width']].values.tolist()
+X_train = train[column_names[:4]].values.tolist()
 y_train = train['class'].values.tolist()
-X_test = test[['sepal length', 'sepal width', 'petal length', 'petal width']].values.tolist()
+X_test = test[column_names[:4]].values.tolist()
 y_test = test['class'].values.tolist()
 
-knn = KNN(num_neighbors=5)
+knn = KNN(K=5)
 knn.fit(X_train, y_train)
 predictions = knn.predict(X_test)
 print(f"My model's accuracy: {accuracy_score(y_test, predictions)}")
@@ -192,14 +188,7 @@ import pandas as pd
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score
 
-iris = pd.read_csv('data/iris.csv', names=['sepal length', 'sepal width', 'petal length', 'petal width', 'class'])
-train, test = train_test_split(iris, random_state=3)
-X_train = train[['sepal length', 'sepal width', 'petal length', 'petal width']].values.tolist()
-y_train = train['class'].values.tolist()
-X_test = test[['sepal length', 'sepal width', 'petal length', 'petal width']].values.tolist()
-y_test = test['class'].values.tolist()
-
-neigh = KNN(num_neighbors=5)
+neigh = KNeighborsClassifier(n_neighbors=5)
 neigh.fit(X_train, y_train)
 predictions = neigh.predict(X_test)
 print(f"Scikit-learn model's accuracy: {accuracy_score(y_test, predictions)}")
@@ -208,3 +197,9 @@ KNN from Scikit-learn accuracy: **94.74%**
 
 
 EXACTLY THE SAME!
+
+
+## Conclusion
+
+A K Nearest Neighbors Classifier is one of the simpler classification algorithms out there. It's built on the premise that similar data points will appear close to each other in space. This makes it somewhat easy to interpret. Another advantage is no training phase. One major disadvantage is that KNNs become extremely slow as your data scales. It's best find another classifier when dealing with a large dataset. This tutorial shows an implementation of a KNN Classifier, however KNNs can work with regression problems as well. Instead of returning the most common class label of the resulting neighbors, you would return the average value of the class labels. 
+
