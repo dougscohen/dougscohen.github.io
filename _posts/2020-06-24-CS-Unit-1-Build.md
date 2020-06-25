@@ -165,8 +165,8 @@ Okay. We have a working algorithm that was built from scratch. Let's see how wel
 import pandas as pd
 from sklearn.metrics import accuracy_score
 
-column_names = ['sepal_length', 'sepal_width', 'petal_length', 'petal_width', 'class']
-iris = pd.read_csv('data/iris.csv', names=column_names)
+col_names = ['sepal_length', 'sepal_width', 'petal_length', 'petal_width', 'class']
+iris = pd.read_csv('data/iris.csv', names=col_names)
 train, test = train_test_split(iris, random_state=3)
 X_train = train[column_names[:4]].values.tolist()
 y_train = train['class'].values.tolist()
