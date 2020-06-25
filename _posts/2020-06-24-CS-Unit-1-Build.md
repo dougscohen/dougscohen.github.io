@@ -84,13 +84,13 @@ def predict(self, X):
 
       # sort the euclidean distances from smallest to largest and grab
       #. the first K distances where K is the num_neigbors we want
-      euclidean_distances_sorted = np.array(euclidean_distances).argsort()[:self.num_neighbors]
+      neighbor_indeces = np.array(euclidean_distances).argsort()[:self.num_neighbors]
 
       # empty dictionary for class count
       neighbor_count = {}
 
       # for each neighbor, find its class
-      for j in euclidean_distances_sorted:
+      for j in neighbor_indeces:
           if self.y_train[j] in neighbor_count:
               neighbor_count[self.y_train[j]] += 1
           else:
@@ -111,9 +111,6 @@ So we've got methods to predict our target, but what if you just simply want to 
 ```python
 def show_neighbors(self, x_instance):
 
-    # set predictions to an empty list
-    neighbors = []
-
     # list containing euclidean distances
     euclidean_distances = []
 
@@ -122,31 +119,35 @@ def show_neighbors(self, x_instance):
     for row in self.X_train:
         eu_dist = self.find_distance(row, x_instance)
         # append each row and the euclidean distance to the list above
-        euclidean_distances.append((row, eu_dist))
+        euclidean_distances.append(eu_dist)
 
-    # sort the euclidean distances from smallest distance to largest
-    #. distance
-    euclidean_distances.sort(key=lambda tup: tup[1])
+    # sort from smallest distance to largest distance and grab the first K
+    #. indeces where K is the number of neigbors
+    neighbor_indices = np.array(euclidean_distances).argsort()[:self.num_neighbors]
 
-    # append to the neigbors list
-    neighbors.append(euclidean_distances)
+    # list containg tuples of neighbor indeces and its euclidian distance
+    #. to x_instance
+    neighbors_and_distances = []
 
-    # return the first K entries in the neighbors list where K is the
-    #. number of neighbors
-    return neighbors[0][:self.num_neighbors]
+    for i in range(len(neighbor_indices)):
+        val1 = neighbor_indices[i]
+        val2 = euclidean_distances[i]
+        neighbors_and_distances.append((val1, val2))
+        
+    return neighbors_and_distances
 ```
 
-Finally, we have our code to return the k nearest neighbors. A lot of the steps are the same as the predict method, however this time, when we append to the euclidean distances, we are appending a tuple that includes the neighbor and its euclidean distance. We then sort it from smallest distance to largest distance, and return the first K results in the list, depending on the number of neighbors that was set initially.
-
+Finally, we have our code to return the k nearest neighbors. A lot of the steps are the same as the predict method, however this time, we are return a list (of K length) of tuples, where each tuple contains a neighbor and its euclidean distance to the given input row of data. Having a method that returns the neighbor indeces is great, because we can then go back in view each neighbor using said indeces.
 
 ## Compare
 
 Okay. We have a working algorithm that was built from scratch. Let's see how well it performs compared to the K Nearest Neighbors classifier in Scikit-learn. 
 
-### KNN from Scratch
+### KNN Classifier from Scratch
 
 ```python
 import pandas as pd
+from sklearn.metrics import accuracy_score
 
 iris = pd.read_csv('data/iris.csv', names=['sepal length', 'sepal width', 'petal length', 'petal width', 'class'])
 train, test = train_test_split(iris, random_state=3)
@@ -163,65 +164,25 @@ print(f"My model's accuracy: {accuracy_score(y_test, predictions)}")
 
 KNN from scratch accuracy: 94.74%
 
-Here's a useless table:
+### KNN Classifier from Scikit-learn
 
-| Number | Next number | Previous number |
-| :------ |:--- | :--- |
-| Five | Six | Four |
-| Ten | Eleven | Nine |
-| Seven | Eight | Six |
-| Two | Three | One |
+```python
+import pandas as pd
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score
 
+iris = pd.read_csv('data/iris.csv', names=['sepal length', 'sepal width', 'petal length', 'petal width', 'class'])
+train, test = train_test_split(iris, random_state=3)
+X_train = train[['sepal length', 'sepal width', 'petal length', 'petal width']].values.tolist()
+y_train = train['class'].values.tolist()
+X_test = test[['sepal length', 'sepal width', 'petal length', 'petal width']].values.tolist()
+y_test = test['class'].values.tolist()
 
-How about a yummy crepe?
-
-![Crepe](https://s3-media3.fl.yelpcdn.com/bphoto/cQ1Yoa75m2yUFFbY2xwuqw/348s.jpg)
-
-It can also be centered!
-
-![Crepe](https://s3-media3.fl.yelpcdn.com/bphoto/cQ1Yoa75m2yUFFbY2xwuqw/348s.jpg){: .center-block :}
-
-Here's a code chunk:
-
-~~~
-var foo = function(x) {
-  return(x + 5);
-}
-foo(3)
-~~~
-
-And here is the same code with syntax highlighting:
-
-```javascript
-var foo = function(x) {
-  return(x + 5);
-}
-foo(3)
+neigh = KNN(num_neighbors=5)
+neigh.fit(X_train, y_train)
+predictions = neigh.predict(X_test)
+print(f"Scikit-learn model's accuracy: {accuracy_score(y_test, predictions)}")
 ```
+KNN from Scikit-learn accuracy: 94.74%
 
-And here is the same code yet again but with line numbers:
-
-{% highlight javascript linenos %}
-var foo = function(x) {
-  return(x + 5);
-}
-foo(3)
-{% endhighlight %}
-
-## Boxes
-You can add notification, warning and error boxes like this:
-
-### Notification
-
-{: .box-note}
-**Note:** This is a notification box.
-
-### Warning
-
-{: .box-warning}
-**Warning:** This is a warning box.
-
-### Error
-
-{: .box-error}
-**Error:** This is an error box.
+EXACTLY THE SAME!
