@@ -4,7 +4,7 @@ title: K Nearest Neighbors Algorithm from Scratch
 subtitle: How to build a K Nearest Neighbors Classifier in Python
 gh-repo: dougscohen/cs-build-week-1
 gh-badge: [star, fork, follow]
-image: /img/doors.jpg
+image: /img/doors_square.jpg
 tags: [Data Science, Python, Alogrithm]
 comments: false
 ---
