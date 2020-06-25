@@ -14,25 +14,18 @@ In this tutorial, I will walk through how to create a K Nearest Neighbors algori
 
 Looking at a KNN is a great place to start studying classfier algorithms because it's straightforward, and pretty easy to understand what's happening behind the scenes. If you want to identify similar data, and you aren't necessarily concerned about efficiency, KNN may be the algorithm for you. Let's summarize the process:
 
-1. Load in your data
-
-2. Initiallize KNN class
-
+```
+1. Load in and preprocess your data
+2. Initialize KNN class
 3. Fit the training data
-
 4. For each row in the training data:
-    
     a. calculate euclidean distance between row and your query
-    
     b. add the distances to a list
-    
 5. Sort the list from smallest distance to largest and grab the train indeces
-
 6. Select the first K entries from the sorted list
-
 7. Grab the class labels of the selected K entries
-
 8. Return the class label that occured the most
+```
 
 Here, we fill focus on steps 2-8 as this is the actual algorithm.
 
