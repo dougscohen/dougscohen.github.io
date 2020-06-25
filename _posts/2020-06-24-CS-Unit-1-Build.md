@@ -12,7 +12,7 @@ comments: false
 ## KNN Classifier from Scratch
 In this tutorial, I will walk through how to create a K Nearest Neighbors algorithm in Python using just Numpy. KNNs are lazy algorithms. This essentially means they do not have a training phase, and instead the `fit()` method is meant to store the training data in memory to be accessed when you go to make a prediction. This also means that predictions can become computationally expensive as your data scales. 
 
-Looking at a KNN is a great place to start studying classfier algorithms because it's straightforward, and pretty easy to understand what's happening behind the scenes. If you want to identify similar data you aren't necessarily concerned about efficiency, KNN may be the algorithm for you. Let's summarize the process:
+Looking at a KNN is a great place to start studying classfier algorithms because it's straightforward, and pretty easy to understand what's happening behind the scenes. If you want to identify similar data, and you aren't necessarily concerned about efficiency, KNN may be the algorithm for you. Let's summarize the process:
 
 1. Load in your data
 
@@ -21,14 +21,16 @@ Looking at a KNN is a great place to start studying classfier algorithms because
 3. Fit the training data
 
 4. For each row in the training data:
+    
     a. calculate euclidean distance between row and your query
+    
     b. add the distances to a list
     
 5. Sort the list from smallest distance to largest and grab the train indeces
 
 6. Select the first K entries from the sorted list
 
-7. Grab the class labels of the selected K entries7
+7. Grab the class labels of the selected K entries
 
 8. Return the class label that occured the most
 
@@ -70,7 +72,7 @@ class KNN():
         self.y_train = y_train
 ```
 
-This shows that when we create a new class object, we choose the number of neighbors we want to find. It automatically defaults to 5. As mentioned above, when calling the `fit()` method, it will store the data to be used when we want to make a prediction. X_train represents a matrix of data which we will pull our neighbors from, and y_train are the target values for X_train. For example:
+This shows that when we create a new class object, we choose the number of neighbors we want to find. It automatically defaults to 5. As mentioned above, when calling the `fit()` method, it will store the data to be used when we want to make a prediction. X_train represents a matrix of data which we will pull our neighbors from, and y_train contains the class labels for X_train. For example:
 
 ```python
 X_train = [[1, 2, 3],        y_train = [0,
@@ -156,7 +158,7 @@ def show_neighbors(self, x_instance):
     return neighbors_and_distances
 ```
 
-Finally, we have our code to return the k nearest neighbors. A lot of the steps are the same as the predict method, however this time, we are return a list (of K length) of tuples, where each tuple contains a neighbor and its euclidean distance to the given input row of data. Having a method that returns the neighbor indeces is great, because we can then go back in view each neighbor using said indeces.
+Finally, we have our code to return the k nearest neighbors. A lot of the steps are the same as the predict method, however this time, we eturn a list (of K length) of tuples, where each tuple contains a neighbor and its euclidean distance to the given input row of data. Having a method that returns the neighbor indeces is great, because we can then go back in view each neighbor using said indeces.
 
 ## Compare
 
