@@ -10,9 +10,29 @@ comments: false
 ---
 
 ## KNN Classifier from Scratch
-In this tutorial, I will walk through how to create a K Nearest Neighbors algorithm in Python using just Numpy. KNNs are lazy algorithms. This essentially means they do not have a training phase, and instead the `fit()` method is meant to store the training data to be accessed when you go to make a prediction.
+In this tutorial, I will walk through how to create a K Nearest Neighbors algorithm in Python using just Numpy. KNNs are lazy algorithms. This essentially means they do not have a training phase, and instead the `fit()` method is meant to store the training data in memory to be accessed when you go to make a prediction. This also means that predictions can become computationally expensive as your data scales. 
 
-Looking at a KNN is a great place to start studying classfier algorithms because it's straightforward, and pretty easy to understand what's happening behind the scenes. Let's dive into it!
+Looking at a KNN is a great place to start studying classfier algorithms because it's straightforward, and pretty easy to understand what's happening behind the scenes. If you want to identify similar data you aren't necessarily concerned about efficiency, KNN may be the algorithm for you. Let's summarize the process:
+
+1. Load in your data
+
+2. Initiallize KNN class
+
+3. Fit the training data
+
+4. For each row in the training data:
+    a. calculate euclidean distance between row and your query
+    b. add the distances to a list
+    
+5. Sort the list from smallest distance to largest and grab the train indeces
+
+6. Select the first K entries from the sorted list
+
+7. Grab the class labels of the selected K entries7
+
+8. Return the class label that occured the most
+
+Here, we fill focus on steps 2-8 as this is the actual algorithm.
 
 ## The Algorithm
 
@@ -35,7 +55,7 @@ def find_distance(self, row_A, row_B):
 
 The comments will help walk you through the code, but let's take a look at it together. The function takes in 2 rows of data that are the same length. Assuming each row has a length greater than 1, we want to iterate through each index of row_A, find its value, and subtract the value at the same index position in row_B. After squaring the difference, we then add that value to the existing distance total. Finally, we take the square root of the total distance to get the Euclidean distance between two rows of data.
 
-It;s important to understand what is happening above, as it is vital in the prediction portion of a K Nearest Neighbors Classifier. In the next step, we will fit the KNN classifier. This step isn't necessary for a lazy learning algorithm, but it can be useful for storing the training data in memory. Let's take a look at what our KNN class would like like:
+It's important to understand what is happening above, as it is vital in the prediction portion of a K Nearest Neighbors Classifier. In the next step, we will fit the KNN classifier. This step isn't necessary for a lazy learning algorithm, but it can be useful for storing the training data in memory. Let's take a look at what our KNN class would look like:
 
 ```python
 class KNN():
@@ -53,14 +73,12 @@ class KNN():
 This shows that when we create a new class object, we choose the number of neighbors we want to find. It automatically defaults to 5. As mentioned above, when calling the `fit()` method, it will store the data to be used when we want to make a prediction. X_train represents a matrix of data which we will pull our neighbors from, and y_train are the target values for X_train. For example:
 
 ```python
-X_train = [[1, 2, 3],
-           [4, 5, 6],
-           [7, 8, 9]]
-
-y_train = [0, 1, 0]
+X_train = [[1, 2, 3],        y_train = [0,
+           [4, 5, 6],                   1,
+           [7, 8, 9]]                   0]
 ```
 
-The first row in X_train would belong to class "0". Second would belong to class "1". And third would belong to calss "O". This is extremely useful in testing how useful our alogrithm is. You can split the data into testing and training, and then when you go to predict on the testing data, you can compare how well the predictions for reach row mtach up against the actual class for each row.
+The first row in X_train would belong to class "0". Second would belong to class "1". And third would belong to calss "0". This is extremely useful in testing how useful our alogrithm is. You can split the data into testing and training, and then when you go to predict on the testing data, you can compare how well the predictions for reach row mtach up against the actual class for each row.
 
 Now that we've covered how to find the Euclidean distance, and how to fit the classifier, let's get into the bulk of any KNN, the prediction. This is the point of it, after all. Say we have a flower, and we know it's characteristics. We want to be able to make an educated guess about the type of flower it is. We use the data we already have on hand to predict the target (flower). So let's define the predict method:
 
@@ -105,7 +123,7 @@ def predict(self, X):
 
 So what's going on here? Basically are iterating through X, where X can either be a single row, or multiple rows of data. Each time through, we are going to calculate the Euclidian distance with every row in X_train. However, we aren't concerned about every Euclidean distances, just the K smallest, where K is the number of neighbors we are looking for. We grab those indeces and then find the class label for each neighbor (accessed through indeces in y_train). Out of all the neighbors, whichever class label appears the most is the one we will append to the predictions list. So however many rows we input for X, is how long our predictions list will be.
 
-If you happen to split your data into training and testing subsets, you can predict on your test set (X_test), and then compare those predictions to thr real class labels (y_test). For a binary classification problem (one where there's only two class labels), by just guessing each target, you would achieve a 50% accuracy rate. So if you do do achieve an accuracy score of over 50%, you know your algoithm is more useful than just guessing! However, realistically, we want our accuracy to be above 90%. We will test our alogithm on a sample dataset a little later, and see how it does!
+If you happen to split your data into training and testing subsets, you can predict on your test set (X_test), and then compare those predictions to the real class labels (y_test). For a binary classification problem (one where there's only two class labels), by just guessing each target, you would achieve a 50% accuracy rate. So if you do achieve an accuracy score of over 50%, you know your algoithm is more useful than just guessing! However, realistically, we want our accuracy to be above 90%. We will test our alogithm on a sample dataset a little later, and see how it does!
 
 So we've got methods to predict our target, but what if you just simply want to view neighbors. Let's create a function where you can input a row of data, and return its nearest neighbors. I mean after all, we are building a K Nearest Neighbors Classifier. Seeing neighbors should shed some light on how well our algorithm works. 
 
