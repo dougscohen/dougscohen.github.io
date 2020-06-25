@@ -6,7 +6,7 @@ gh-repo: dougscohen/cs-build-week-1
 gh-badge: [star, fork, follow]
 image: /img/doors_square.jpg
 tags: [Data Science, Python, Alogrithm]
-comments: false
+comments: true
 ---
 
 ## KNN Classifier from Scratch
