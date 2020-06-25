@@ -4,6 +4,7 @@ title: K Nearest Neighbors Algorithm from Scratch
 subtitle: How to build a K Nearest Neighbors Classifier in Python
 gh-repo: dougscohen/cs-build-week-1
 gh-badge: [star, fork, follow]
+image: /img/doors.jpg
 tags: [Data Science, Python, Alogrithm]
 comments: false
 ---
@@ -162,7 +163,7 @@ predictions = knn.predict(X_test)
 print(f"My model's accuracy: {accuracy_score(y_test, predictions)}")
 ```
 
-KNN from scratch accuracy: 94.74%
+KNN from scratch accuracy: **94.74%**
 
 ### KNN Classifier from Scikit-learn
 
@@ -183,6 +184,7 @@ neigh.fit(X_train, y_train)
 predictions = neigh.predict(X_test)
 print(f"Scikit-learn model's accuracy: {accuracy_score(y_test, predictions)}")
 ```
-KNN from Scikit-learn accuracy: 94.74%
+KNN from Scikit-learn accuracy: **94.74%**
+
 
 EXACTLY THE SAME!
