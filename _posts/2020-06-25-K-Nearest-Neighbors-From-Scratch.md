@@ -133,6 +133,8 @@ def show_neighbors(self, x_instance):
     # sort from smallest distance to largest distance and grab the first K
     #. indeces where K is the number of neigbors
     neighbor_indices = np.array(euclidean_distances).argsort()[:self.K]
+    
+    euclidean_distances.sort()
 
     # list containg tuples of neighbor indeces and its euclidian distance
     #. to x_instance
