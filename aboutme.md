@@ -14,4 +14,6 @@ My name is Doug Cohen. I am a Data Scientist from North Carolina and here are th
 - 3 of my favorite movies are The Dark Knight, Avengers: Infinity War, and Interstellar
 - My favorite part about data science is creating visualizations
 
+---
+
   [![Github](http://img.shields.io/badge/Github-black?style=plastic&logo=github&labelColor=black)](https://github.com/dougscohen) [![LinkedIn](http://img.shields.io/badge/LinkedIn-blue?style=plastic&logo=linkedin&labelColor=blue)](https://www.linkedin.com/in/dougcohen3/)
