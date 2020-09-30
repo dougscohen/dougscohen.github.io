@@ -2,12 +2,12 @@
 layout: post
 title: Financial Forecasting - A Lambda Labs Project
 subtitle: Helping SaverLife users save their first $400
-share-img: /img/piggy_bank.jpg
+image: /img/piggy_bank.jpg
 tags: [Data Science, Python]
 comments: true
 ---
 
-# A problem very much worth solving.
+## A problem very much worth solving.
 
 I recently got the amazing opportunity to work with a nonprofit organization called SaverLife. While partnering with SaverLife, our goal is to help people save their first $400. If you can believe it, 47 million adults nationwide don't have $400 in their savings. SaverLife seeks to "make saving money easier and more rewarding" so that when you need to fix a flat tire, pay a speeding ticket, or cover some other emergency expense, you won't have to take on debt.
 
@@ -17,7 +17,7 @@ There are just way too many adults who lack the savings to address the inevitabl
 
 One concern I had entering this project was with the data, specifically the anonymity of the data. I thought, if I were a user of this app, it could be really valuable to see how other people like me spend their money. Information such as residential location, income, age, and marital status are just a few examples that would help identify where a user is spending money compared to other humans like them.
 
-# Problem ➡️ Problem-Solving
+## Problem ➡️ Problem-Solving
 
 Upon receiving the product roadmap from the stakeholder, our first step was to break down our goals into shippable tasks. A major component of our product was to visualize a user's transactions. These visualizations would both showcase a person's past spending and forecast possible future budgets. We worked to break down each one of these ideas into individual tasks. Utilizing Trello, a visual tool for organizing projects, we brainstormed and laid out assignments for what it would take to ship this particular feature.
 
@@ -25,7 +25,7 @@ Upon receiving the product roadmap from the stakeholder, our first step was to b
 
 As a data scientist working on this product, you can see a few of the tasks I was responsible for in order to get this feature shipped, including exploratory data analysis, creating visuals with Plotly, and deploying our API to AWS Elastic Beanstalk.
 
-# Ok, you've made it this far. Let's talk about implementation.
+## Ok, you've made it this far. Let's talk about implementation.
 
 The first goal was to visualize a user's past spending habits. This means over a certain time period (last week or month, for instance), users can see how much money they spent each day, and what they spent their money on, in terms of the category (ex. food, shopping, utilities, etc). In order to make this happen, we needed to:
 - clean & filter the data
@@ -45,7 +45,7 @@ Implementing these features did not come without its technical challenges, thoug
 
 Another challenge our team faced, data scientists, in particular, was the lack of demographic information in the data. This affected our goals and intentions for the project. For example, we didn't have access to every user's income or any other demographic information such as age or family size. We had dreamed up an idea to have a budget comparison feature. For instance, how does a 37-year-old male living in San Francisco spend money in comparison to other 37-year-old San Francisco males? Knowing what we knew about our data, we overcame this by having the user manually input the necessary information that we needed, such as income. This workaround allowed us to complete some of the functionality we wanted to, but in fear of burdening the users for too much additional data, we decided to limit the amount of information that they would provide us.
 
-# The current state of the product & what's in store 👀
+## The current state of the product & what's in store 👀
 
 As it stands currently, our product exists with several features:
 
@@ -67,7 +67,7 @@ So what's in store? Something we would like to implement in the future is some s
 
 Also, I mentioned the data is anonymized, but depending on if we can get income information from a user (either from more data that SaverLife grants us or from having the user manually input that information) we can at least do a very surface level "budget comparison" feature focused on users with the same income levels. Other demographic information, such as location or employment status, would be great for this feature as well.
 
-# Let's Recap 📝
+## Let's Recap 📝
 Saving money is HARD. Keeping track of the money going in and out of your bank account can seem tedious and annoying. But my team partnered with SaverLife to make this idea of "budgeting" a little simpler. We believe the first step in saving money is financial awareness. Being conscious of your spending can go a long way, thus, we offer a product to visualize your past spending habits. We also recognize that budgeting is difficult, and you don't always know where to start. My team is here to ease that burden and suggest a budget for you to follow, so all you have to do is not spend more than you are supposed to.
 
 I had a blast working on this product, and although there were many challenges my team and I came across, the hope of helping thousands of adults become financially responsible is what kept us going!
