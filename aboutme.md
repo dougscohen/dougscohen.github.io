@@ -13,5 +13,4 @@ My name is Doug Cohen. I am a Data Scientist from North Carolina and here are th
 - My favorite animal that I can't have is a red panda, but my favorite animal that I could have is a red labrador
 - 3 of my favorite movies are The Dark Knight, Avengers: Infinity War, and Interstellar
 - My favorite part about data science is creating visualizations
-- check out my [Github](https://github.com/dougscohen)
-- Feel free to connect with me on [LinkedIn](https://www.linkedin.com/in/dougcohen3/)
+- [![Github](http://img.shields.io/badge/Github-black?style=plastic&logo=github&labelColor=black)](https://github.com/dougscohen) [![LinkedIn](http://img.shields.io/badge/LinkedIn-blue?style=plastic&logo=linkedin&labelColor=blue)](https://www.linkedin.com/in/dougcohen3/)
