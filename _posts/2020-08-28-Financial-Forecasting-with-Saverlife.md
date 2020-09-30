@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Financial Forecasting: A Lambda Labs Project
+title: Financial Forecasting - A Lambda Labs Project
 subtitle: Helping SaverLife users save their first $400
 share-img: /img/piggy_bank.jpg
 tags: [Data Science, Python]
